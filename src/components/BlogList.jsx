@@ -10,13 +10,14 @@ function BlogList() {
     setCurrentPage,
     pageSize,
     setPageSize,
-    currentPaginationData,
+    paginationData,
     paginationRange,
     lastPage,
   } = usePagination();
 
   const updateRowsPerPage = (pageSize) => {
     setPageSize(pageSize);
+    setCurrentPage(1);
   };
   const updatePage = (page) => {
     setCurrentPage(page);
@@ -37,7 +38,7 @@ function BlogList() {
         // Do not remove the aria-label below, it is used for Hatchways automation.
         aria-label="blog list"
       >
-        {currentPaginationData.map((blog) => (
+        {paginationData.map((blog) => (
           <BlogPost
             key={blog.id}
             author={blog.author}

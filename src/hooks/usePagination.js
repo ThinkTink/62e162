@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePaginationRange } from "./usePaginationRange";
 import blogs from "../data/blogs.json";
 
@@ -21,6 +21,9 @@ export const usePagination = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(15);
+  const [paginationData, setPaginationData] = useState(
+    blogs.posts.slice(0, 15)
+  );
 
   const paginationRange = usePaginationRange({
     totalCount,
@@ -28,10 +31,14 @@ export const usePagination = () => {
     pageSize,
   });
 
-  const currentPaginationData = blogs.posts.slice(
-    (currentPage - 1) * pageSize,
-    Math.min(totalCount, currentPage * pageSize)
-  );
+  useEffect(() => {
+    const updatePaginationData = blogs.posts.slice(
+      (currentPage - 1) * pageSize,
+      Math.min(totalCount, currentPage * pageSize)
+    );
+
+    setPaginationData(updatePaginationData);
+  }, [currentPage, pageSize]);
 
   const lastPage = paginationRange[paginationRange.length - 1];
 
@@ -41,7 +48,7 @@ export const usePagination = () => {
     pageSize,
     setPageSize,
     paginationRange,
-    currentPaginationData,
+    paginationData,
     lastPage,
   };
 };
